@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+         table{
+            border: 2px solid black;
+            width :80vw;
+            margin: auto;
+            
+
+        }
+        th,td{
+            border: 2px solid black;
+            width: 20vw;
+            margin:auto;
+            text-align: center;
+        
+        }
+    </style>
+    <script>
+        const URL ="https://dummyjson.com/products?limit=10&skip=2";
+        const CURRENCY_URL =
+            "https://api.frankfurter.dev/v2/rate/USD/INR";
+          let products=[];
+          let cart=[];
+       async function loadproduct(){
+            try{
+                let rows ="";
+              const res = await fetch(URL);
+              console.log("res=",res);
+              const data = await res.json();
+              console.log("data=",data.products);
+              products = data.products;
+              const currencyRes = await fetch(CURRENCY_URL);
+
+                console.log("Currency response =", currencyRes);
+
+                const currencyData = await currencyRes.json();
+
+                console.log("Currency data =", currencyData);
+
+                const rate = currencyData.rate;
+
+                console.log("1 USD =", rate, "INR")
+                 data.products.map((i,index)=>{
+                const priceInRupee =
+                        (i.price * rate).toFixed(2);
+              rows+=`<tr>
+                     <td> ${index+1}</td>
+                    <td> ${i.title}</td>
+                    <td> <img src="${i.thumbnail}" alt="${i.title}" width="80px"></td>
+                    <td> ${i.category}</td>
+                    <td> ${i.rating}</td>
+                    <td> ₹${priceInRupee}</td>
+                    <td> ${i.stock}</td>
+                    <td><button onclick="addToCart(${i.id})">Add to Cart</button></td>
+                       </tr>`
+            });
+              const el = document.getElementById("data");
+              el.innerHTML = rows;
+            }
+            catch(err){
+               console.log("Error:",err);
+            }
+        }
+         function addToCart(id) {
+
+    id = Number(id);
+
+    const product = products.find(i => i.id === id);
+
+    if (!product) {
+        console.log("Product not found:", id);
+        return;
+    }
+
+    cart.push(product);
+
+    console.log("Cart =", cart);
+
+    alert(product.title + " added to cart");
+}
+        loadproduct();
+    </script>
+</head>
+<body>
+   <h1><center>List of products</center></h1> 
+   <table cellspacing="0">
+    <thead>
+        <tr>
+            <th>Sr.no</th>
+            <th>Title</th>
+            <th>Image</th>
+            <th>Category</th>
+            <th>Rating</th>
+            <th>price</th>
+            <th>stock</th>
+            <th>Add to cart</th>
+        </tr>
+    </thead>
+    <tbody id="data">
+
+    </tbody>
+   </table>
+</body>
+</html>
