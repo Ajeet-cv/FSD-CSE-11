@@ -1,0 +1,22 @@
+{
+  "name": "book-npn-app",
+  "version": "1.0.0",
+  "description": "\"my first npn app\"",
+  "license": "ISC",
+  "author": "Ajeet chaurasiya",
+  "type": "commonjs",
+
+  "scripts": {
+    "start":"parcel index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8"
+  },
+  "devDependencies": {
+    "@babel/cli": "^8.0.4",
+    "@babel/core": "^8.0.1",
+    "parcel": "^2.16.4"
+  }
+}
